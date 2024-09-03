@@ -12,7 +12,20 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     ports:
-      - "5445:5432"
+      - "5432:5432"
+  db-test:
+    image: postgres:14.2-alpine
+    container_name: demo-postgres-14.2-test
+    volumes:
+      - postgres_data_test:/var/lib/postgresql/data
+    command:
+      "postgres -c 'max_connections=500'"
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB_TEST}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - "5433:5432"
   web:
     build:
       context: .
@@ -34,4 +47,5 @@ services:
       - "3000:3000"
 volumes:
   postgres_data: {}
+  postgres_data_test: {}
   app-storage: {}

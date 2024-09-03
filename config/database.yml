@@ -16,8 +16,10 @@ development:
 test:
   <<: *default
   database: e_core_development_test
-  username: <%= ENV['POSTGRES_USER'] %>
-  password: <%= ENV['POSTGRES_PASSWORD'] %>
+  username: 'gustavo'
+  password: 'password123'
+  host: 'localhost'
+  port: 5433
 
 production:
   <<: *default
