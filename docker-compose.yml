@@ -17,7 +17,7 @@ services:
     build:
       context: .
       dockerfile: dev.dockerfile
-    command: "./bin/rails server"
+    command: "./bin/rails server -b 0.0.0.0"
     environment:
       - RAILS_ENV=${RAILS_ENV}
       - POSTGRES_HOST=${POSTGRES_HOST}
@@ -27,6 +27,7 @@ services:
       - RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
     volumes:
       - app-storage:/rails/storage
+      - .:/rails
     depends_on:
       - db
     ports:
