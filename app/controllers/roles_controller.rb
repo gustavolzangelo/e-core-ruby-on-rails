@@ -8,6 +8,16 @@ class RolesController < ApplicationController
     end
   end
 
+  def membership
+    role = Role.find(params[:id])
+
+    return render json: { error: 'Role not found' }, status: :not_found unless role.present?
+
+    memberships = Membership.where(role_id: role.id)
+
+    render json: { memberships: memberships }, status: :ok
+  end
+
   private
 
   def role_params

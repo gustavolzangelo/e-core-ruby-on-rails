@@ -8,7 +8,12 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
 
-  post "roles" => "roles#create"
+  resources :roles, only: [:create] do
+    get 'membership', on: :member
+  end
 
-  post "memberships" => "memberships#create"
+  resources :memberships, only: [:show, :create] do
+    get 'role', on: :member
+  end
+
 end

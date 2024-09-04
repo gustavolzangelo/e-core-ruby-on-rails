@@ -15,6 +15,16 @@ class MembershipsController < ApplicationController
     end
   end
 
+  def role
+    membership = Membership.includes(:role).find(params[:id])
+
+    if membership.role
+      render json: { role: membership.role }, status: :ok
+    else
+      render json: { error: 'Role not found' }, status: :not_found
+    end
+  end
+
   private
 
   def membership_params

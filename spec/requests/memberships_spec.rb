@@ -101,4 +101,28 @@ RSpec.describe 'Memberships API', type: :request do
       expect(json_response['errors']).to include('Role not found')
     end
   end
+
+  context 'when looking up the role for a membership' do
+    let(:membership) { create(:membership, role: role, user_id: user_id, team_id: team_id) }
+    let(:user_id) { Faker::Internet.uuid }
+    let(:team_id) { Faker::Internet.uuid }
+
+    it 'returns the role associated with the membership' do
+      get "/memberships/#{membership.id}/role"
+
+      expect(response).to have_http_status(:ok)
+      json_response = JSON.parse(response.body)
+
+      expect(json_response['role']['id']).to eq(role.id)
+      expect(json_response['role']['name']).to eq(role.name)
+    end
+
+    context 'when the membership is not found' do
+      it 'returns an error' do
+        get "/memberships/#{Faker::Internet.uuid}/role"
+
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+  end
 end
