@@ -9,4 +9,6 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   post "roles" => "roles#create"
+
+  post "memberships" => "memberships#create"
 end
