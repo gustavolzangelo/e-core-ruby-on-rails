@@ -39,7 +39,8 @@ class RoleManagementService < ApplicationService
                errors: ["User doesn't belong to the team"] }
     end
 
-    membership = Membership.new(user_id: @user_id, team_id: @team_id, role:)
+    membership = Membership.find_or_initialize_by(user_id: @user_id, team_id: @team_id)
+    membership.role = role
     if membership.save
       { success: true, membership: }
     else

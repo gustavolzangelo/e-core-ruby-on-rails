@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class MembershipsController < ApplicationController
+  before_action :validate_create_params, only: [:create]
   def create
     service = RoleManagementService.new(
       name: membership_params[:role_name],
@@ -31,5 +32,11 @@ class MembershipsController < ApplicationController
 
   def membership_params
     params.require(:membership).permit(:role_name, :user_id, :team_id)
+  end
+
+  def validate_create_params
+    if membership_params[:role_name].blank? || membership_params[:user_id].blank? || membership_params[:team_id].blank?
+      render json: { errors: ['Role name, user id, and team id must be provided'] }, status: :unprocessable_content
+    end
   end
 end
