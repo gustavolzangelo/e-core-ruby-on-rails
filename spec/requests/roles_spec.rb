@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # spec/requests/roles_spec.rb
 require 'rails_helper'
 
@@ -25,7 +27,7 @@ RSpec.describe 'Roles API', type: :request do
 
         expect(response).to have_http_status(:unprocessable_content)
         json_response = JSON.parse(response.body)
-        expect(json_response['errors']).to include("Role already exists")
+        expect(json_response['errors']).to include('Role already exists')
       end
     end
 

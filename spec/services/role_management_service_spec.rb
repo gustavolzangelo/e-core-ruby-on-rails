@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # spec/services/role_management_service_spec.rb
 require 'rails_helper'
 

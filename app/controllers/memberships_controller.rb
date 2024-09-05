@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MembershipsController < ApplicationController
   def create
     service = RoleManagementService.new(
@@ -30,5 +32,4 @@ class MembershipsController < ApplicationController
   def membership_params
     params.require(:membership).permit(:role_name, :user_id, :team_id)
   end
-
 end

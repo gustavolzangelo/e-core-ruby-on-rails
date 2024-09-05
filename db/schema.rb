@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -10,25 +12,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_03_184902) do
+ActiveRecord::Schema[7.1].define(version: 20_240_903_184_902) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  enable_extension 'plpgsql'
 
-  create_table "memberships", force: :cascade do |t|
-    t.string "user_id"
-    t.string "team_id"
-    t.bigint "role_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["role_id"], name: "index_memberships_on_role_id"
+  create_table 'memberships', force: :cascade do |t|
+    t.string 'user_id'
+    t.string 'team_id'
+    t.bigint 'role_id', null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['role_id'], name: 'index_memberships_on_role_id'
   end
 
-  create_table "roles", force: :cascade do |t|
-    t.string "name", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_roles_on_name", unique: true
+  create_table 'roles', force: :cascade do |t|
+    t.string 'name', null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['name'], name: 'index_roles_on_name', unique: true
   end
 
-  add_foreign_key "memberships", "roles"
+  add_foreign_key 'memberships', 'roles'
 end

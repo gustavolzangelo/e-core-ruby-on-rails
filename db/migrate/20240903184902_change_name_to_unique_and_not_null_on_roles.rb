@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChangeNameToUniqueAndNotNullOnRoles < ActiveRecord::Migration[7.1]
   def change
     change_column_null :roles, :name, false

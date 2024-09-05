@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'httparty'
 
 class RoleManagementService < ApplicationService
@@ -14,16 +15,16 @@ class RoleManagementService < ApplicationService
 
   def create_role
     return { success: false, errors: ['Role already exists'] } if role_exists?
+
     role = Role.new(name: @name)
     if role.save
-      { success: true, role: role }
+      { success: true, role: }
     else
       { success: false, errors: role.errors.full_messages }
     end
   end
 
   def assign_role_to_member
-
     role = Role.find_by(name: @name)
     return { success: false, errors: ['Role not found'] } unless role
 
@@ -33,11 +34,14 @@ class RoleManagementService < ApplicationService
     team = fetch_team(@team_id)
     return { success: false, errors: ['Team not found'] } unless team
 
-    return { success: false, errors: ["User doesn't belong to the team"] } unless team['teamMemberIds'].include?(@user_id)
+    unless team['teamMemberIds'].include?(@user_id)
+      return { success: false,
+               errors: ["User doesn't belong to the team"] }
+    end
 
-    membership = Membership.new(user_id: @user_id, team_id: @team_id, role: role)
+    membership = Membership.new(user_id: @user_id, team_id: @team_id, role:)
     if membership.save
-      { success: true, membership: membership }
+      { success: true, membership: }
     else
       { success: false, errors: membership.errors.full_messages }
     end
@@ -56,6 +60,7 @@ class RoleManagementService < ApplicationService
     end
 
     return nil unless parsed_response.present?
+
     parsed_response
   rescue StandardError => e
     Rails.logger.error("Failed to fetch user: #{e.message}")
@@ -71,10 +76,10 @@ class RoleManagementService < ApplicationService
     end
 
     return nil unless parsed_response.present?
+
     parsed_response
   rescue StandardError => e
     Rails.logger.error("Failed to fetch team: #{e.message}")
     nil
   end
-
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RolesController < ApplicationController
   def create
     result = RoleManagementService.new(name: role_params[:name]).create_role
@@ -15,7 +17,7 @@ class RolesController < ApplicationController
 
     memberships = Membership.where(role_id: role.id)
 
-    render json: { memberships: memberships }, status: :ok
+    render json: { memberships: }, status: :ok
   end
 
   private
