@@ -1,0 +1,25 @@
+Lint/MissingSuper:
+  Exclude:
+    - 'app/services/*'
+
+Metrics/PerceivedComplexity:
+  Exclude:
+    - 'bin/*'
+
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - 'bin/*'
+
+Layout/LineLength:
+  Exclude:
+    - 'bin/*'
+
+
+Metrics/BlockLength:
+  Enabled: 99
+
+Style/Documentation:
+  Enabled: false
+
+Metrics/MethodLength:
+  Max: 30

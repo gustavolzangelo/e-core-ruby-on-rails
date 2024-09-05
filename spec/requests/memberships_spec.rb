@@ -18,7 +18,8 @@ RSpec.describe 'Memberships API', type: :request do
     before do
       stub_request(:get, "#{ENV['EXTERNAL_SERVICE_BASE_URL']}/teams/#{team_id}")
         .to_return(status: 200, body: { id: team_id, name: 'Team Alpha',
-                                        teamMemberIds: [user_id] }.to_json, headers: { 'Content-Type' => 'application/json' })
+                                        teamMemberIds: [user_id] }.to_json,
+                   headers: { 'Content-Type' => 'application/json' })
     end
 
     it 'assigns the role to the team member and returns the membership' do
@@ -41,10 +42,10 @@ RSpec.describe 'Memberships API', type: :request do
 
   context 'when the user does not belong to the team' do
     before do
-      # Mock the external API call for fetching the team without the user in the team
       stub_request(:get, "#{ENV['EXTERNAL_SERVICE_BASE_URL']}/teams/#{team_id}")
         .to_return(status: 200, body: { id: team_id, name: 'Team Alpha',
-                                        teamMemberIds: ['some-other-user-id'] }.to_json, headers: { 'Content-Type' => 'application/json' })
+                                        teamMemberIds: ['some-other-user-id'] }.to_json,
+                   headers: { 'Content-Type' => 'application/json' })
     end
 
     it 'returns an error when the user does not belong to the team' do
@@ -64,7 +65,6 @@ RSpec.describe 'Memberships API', type: :request do
 
   context 'when the team is not found' do
     before do
-      # Mock the external API call for a missing team
       stub_request(:get, "#{ENV['EXTERNAL_SERVICE_BASE_URL']}/teams/#{team_id}")
         .to_return(status: 404, body: '')
     end
@@ -88,7 +88,8 @@ RSpec.describe 'Memberships API', type: :request do
     before do
       stub_request(:get, "#{ENV['EXTERNAL_SERVICE_BASE_URL']}/teams/#{team_id}")
         .to_return(status: 200, body: { id: team_id, name: 'Team Alpha',
-                                        teamMemberIds: [user_id] }.to_json, headers: { 'Content-Type' => 'application/json' })
+                                        teamMemberIds: [user_id] }.to_json,
+                   headers: { 'Content-Type' => 'application/json' })
     end
 
     it 'returns an error when the role is not found' do
