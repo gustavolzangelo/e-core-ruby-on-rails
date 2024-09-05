@@ -23,6 +23,10 @@ class RoleManagementService < ApplicationService
   end
 
   def assign_role_to_member
+
+    role = Role.find_by(name: @name)
+    return { success: false, errors: ['Role not found'] } unless role
+
     user = fetch_user(@user_id)
     return { success: false, errors: ['User not found'] } unless user
 
@@ -30,9 +34,6 @@ class RoleManagementService < ApplicationService
     return { success: false, errors: ['Team not found'] } unless team
 
     return { success: false, errors: ["User doesn't belong to the team"] } unless team['teamMemberIds'].include?(@user_id)
-
-    role = Role.find_by(name: @name)
-    return { success: false, errors: ['Role not found'] } unless role
 
     membership = Membership.new(user_id: @user_id, team_id: @team_id, role: role)
     if membership.save
@@ -47,20 +48,30 @@ class RoleManagementService < ApplicationService
   end
 
   def fetch_user(user_id)
-    response = self.class.get("/users/#{user_id}")
-    puts response.inspect
+    cache_key = "/user/#{user_id}"
 
-    return nil unless response.success?
-    response.parsed_response
+    parsed_response = Rails.cache.fetch(cache_key, expires_in: 12.hours) do
+      response = HTTParty.get("#{ENV['EXTERNAL_SERVICE_BASE_URL']}/users/#{user_id}")
+      response.code == 200 ? response.parsed_response : nil
+    end
+
+    return nil unless parsed_response.present?
+    parsed_response
   rescue StandardError => e
     Rails.logger.error("Failed to fetch user: #{e.message}")
     nil
   end
 
   def fetch_team(team_id)
-    response = self.class.get("/teams/#{team_id}")
-    return nil unless response.success?
-    response.parsed_response
+    cache_key = "/team/#{team_id}"
+
+    parsed_response = Rails.cache.fetch(cache_key, expires_in: 12.hours) do
+      response = HTTParty.get("#{ENV['EXTERNAL_SERVICE_BASE_URL']}/teams/#{team_id}")
+      response.present? ? response.parsed_response : nil
+    end
+
+    return nil unless parsed_response.present?
+    parsed_response
   rescue StandardError => e
     Rails.logger.error("Failed to fetch team: #{e.message}")
     nil
